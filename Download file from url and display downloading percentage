@@ -1,0 +1,55 @@
+import java.io.*;​
+import java.net.*;​
+public class Seven extends Thread {​
+    public static void download(String filename, String fileurl)throws IOException, 
+MalformedURLException, InterruptedException​
+    {​
+    BufferedInputStream in=null;​
+    FileOutputStream fout=null;​
+​
+        try {​
+            URL url=new URL(fileurl);​
+            URLConnection conn = url.openConnection();​
+            int size = conn.getContentLength();​
+            in = new BufferedInputStream(url.openStream());​
+            fout = new FileOutputStream(filename);​
+            long totalbytes=url.getFile().length();​
+​
+            byte data[] = new byte[1024];​
+            int count;​
+            double sum=0.0;​
+            while ((count = in.read(data, 0, 1024)) != -1) {​
+                fout.write(data, 0, count);​
+                sum += count;​
+                if (size > 0) {​
+                    Thread.sleep(1000);​
+                    System.out.print((int)(sum / size * 100) + "%\n");​
+​
+                }​
+            }​
+        } finally {​
+            if (in != null)​
+                in.close();​
+            if (fout != null)​
+                fout.close();​
+        }​
+        Thread.sleep(1000);​
+        System.out.println("Download Completed Successfully!!!");​
+    }​
+​
+    public static void main(String args[]) throws IOException, InterruptedException​
+    {​
+        String directory="D:/Inovatrik Training";​
+​
+        System.out.println("Downloading....");​
+        try {​
+            download(directory+"\\sample.pdf", 
+"http://www.africau.edu/images/default/sample.pdf");​
+        }​
+        catch(MalformedURLException e)​
+        {​
+        e.printStackTrace();​
+        }​
+    }​
+}​
+ 
